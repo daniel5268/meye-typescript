@@ -1,0 +1,23 @@
+{
+  "name": "meye-typescript",
+  "version": "1.0.0",
+  "description": "This proyect serves the data to the meye-digital-assistant",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/daniel5268/meye-typescript.git"
+  },
+  "keywords": [
+    "rol",
+    "meye"
+  ],
+  "author": "https://github.com/daniel5268",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/daniel5268/meye-typescript/issues"
+  },
+  "homepage": "https://github.com/daniel5268/meye-typescript#readme"
+}
