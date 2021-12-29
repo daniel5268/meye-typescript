@@ -1,23 +1,13 @@
-const assert = require('assert');
+import assert from 'assert';
+import express from 'express';
 
-const middleware = require('../../src/middleware');
-const { errors: { BadGatewayError } } = require('../../src/domain');
-const { NotFoundError } = require('../../src/domain/errors');
+import { errorsHandler } from '../../src/middleware';
+import { errors } from '../../src/domain';
 
-function getMockedRes(wantStatusCode) {
-  return {
-    status: (statusCode) => ({
-      send: (response) => {
-        if (statusCode === wantStatusCode) return response;
-
-        throw new Error('unexpected call');
-      },
-    }),
-  };
-}
+const { BadGatewayError, NotFoundError } = errors;
 
 describe('Middleware unit tests', () => {
-  describe('errorsHandlerMiddleware', () => {
+  describe('errorsHandler', () => {
     const internalError = {
       error: {
         message: 'Internal error, please contact administrator',
@@ -27,7 +17,7 @@ describe('Middleware unit tests', () => {
     const tests = [
       {
         name: 'should work correctly with a 5xx status code',
-        err: new BadGatewayError(),
+        err: new BadGatewayError('bad gateway'),
         status: 500,
         wantErr: internalError,
       },
@@ -41,12 +31,6 @@ describe('Middleware unit tests', () => {
           },
         },
       },
-      {
-        name: 'should work correctly when no status is passed',
-        err: {},
-        status: 500,
-        wantErr: internalError,
-      },
     ];
 
     tests.forEach((test) => {
@@ -55,7 +39,17 @@ describe('Middleware unit tests', () => {
       } = test;
 
       it(name, () => {
-        const gotErr = middleware.errorsHandlerMiddleware(err, {}, getMockedRes(status), {});
+        const res = {
+          status: (code: number): any => ({
+            send: (response: any): any => {
+              if (code === status) return response;
+
+              throw new Error('Unexpected calling');
+            },
+          }),
+        };
+
+        const gotErr = errorsHandler(err, {}, res as express.Response, {});
 
         assert.deepStrictEqual(gotErr, wantErr);
       });

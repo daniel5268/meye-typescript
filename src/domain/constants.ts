@@ -1,4 +1,4 @@
-module.exports = {
+const http = {
   statusCodes: {
     OK: 200,
     CREATED: 201,
@@ -10,3 +10,9 @@ module.exports = {
     BAD_GATEWAY: 502,
   },
 };
+
+export default {
+  http,
+};
+
+export { http };
