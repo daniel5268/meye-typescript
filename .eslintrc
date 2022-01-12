@@ -8,8 +8,10 @@
     "airbnb-base",
     "airbnb-typescript/base"
   ],
+  "rules": {
+    "max-len": ["error", { "code": 120 }]
+  },
   "parserOptions": {
     "project": "./tsconfig.json"
-  },
-  "include": ["./tests/**/*.ts"]
+  }
 }

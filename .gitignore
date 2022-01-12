@@ -3,3 +3,8 @@ dist/
 .env
 .vscode/
 .nyc_output/
+.idea/
+.test.env
+build/
+tmp/
+temp/

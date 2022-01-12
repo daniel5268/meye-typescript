@@ -17,9 +17,9 @@ class App {
   }
 
   listen(): void {
-    const port = infrastructure.config.api.PORT;
+    const { port, apiName } = infrastructure.config.api;
     this.app.listen(port, () => {
-      infrastructure.logger.info(`${infrastructure.config.api.API_NAME} listening at :${port}`);
+      infrastructure.logger.info(`${apiName} listening at :${port}`);
     });
   }
 }

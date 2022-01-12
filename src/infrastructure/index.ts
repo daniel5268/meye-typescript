@@ -1,12 +1,13 @@
-import Logger from './logger';
+import Logger from './Logger';
 import config from './config';
+import DatabaseHelper from './DatabaseHelper';
 
 const logger = new Logger();
 
 export default {
   logger,
   config,
+  DatabaseHelper,
 };
 
-export { logger };
-export { config };
+export { logger, config, DatabaseHelper };

@@ -1,41 +1,41 @@
-import assert from 'assert';
 import express from 'express';
+import { expect } from 'chai';
 
 import { errorsHandler } from '../../src/middleware';
-import { errors } from '../../src/domain';
+import { constants } from '../../src/domain';
+import { HttpError, BadGatewayError, NotFoundError } from '../../src/domain/errors';
 
-const { BadGatewayError, NotFoundError } = errors;
+const { http: { statusCodes: { INTERNAL_ERROR, NOT_FOUND } } } = constants;
 
 describe('Middleware unit tests', () => {
   describe('errorsHandler', () => {
-    const internalError = {
-      error: {
-        message: 'Internal error, please contact administrator',
-      },
+    const internalError = new HttpError('Internal error, please contact administrator', INTERNAL_ERROR);
+
+    type Test = {
+      name: string;
+      error: HttpError;
+      status: number;
+      wantErr: Error;
     };
 
-    const tests = [
+    const tests: Test[] = [
       {
         name: 'should work correctly with a 5xx status code',
-        err: new BadGatewayError('bad gateway'),
-        status: 500,
+        error: new BadGatewayError('bad gateway'),
+        status: INTERNAL_ERROR,
         wantErr: internalError,
       },
       {
         name: 'should work correctly with a 4xx status code',
-        err: new NotFoundError('pj with id 3 not found'),
-        status: 404,
-        wantErr: {
-          error: {
-            message: 'pj with id 3 not found',
-          },
-        },
+        error: new NotFoundError('pj with id 3 not found'),
+        status: NOT_FOUND,
+        wantErr: new NotFoundError('pj with id 3 not found'),
       },
     ];
 
     tests.forEach((test) => {
       const {
-        name, err, wantErr, status,
+        name, error, wantErr, status,
       } = test;
 
       it(name, () => {
@@ -49,9 +49,9 @@ describe('Middleware unit tests', () => {
           }),
         };
 
-        const gotErr = errorsHandler(err, {}, res as express.Response, {});
+        const gotErr = errorsHandler(error, {}, res as express.Response, {});
 
-        assert.deepStrictEqual(gotErr, wantErr);
+        expect(gotErr).to.contain(wantErr);
       });
     });
   });

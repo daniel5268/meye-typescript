@@ -1,6 +1,7 @@
 import assert from 'assert';
 
-import { errors, constants } from '../../src/domain';
+import { errors, constants, models } from '../../src/domain';
+import { user as userData } from '../data';
 
 const { http: { statusCodes } } = constants;
 
@@ -35,6 +36,16 @@ describe('Domain unit tests', () => {
       const { status, message } = new errors.ForbiddenError(testMessage);
       assert.strictEqual(status, statusCodes.FORBIDDEN);
       assert.strictEqual(message, testMessage);
+    });
+  });
+
+  describe('models', () => {
+    describe('User', () => {
+      it('hashPassword', async () => {
+        const user = new models.User(...userData.userConstructorParams);
+        await user.hashPassword();
+        assert(user.password !== userData.password);
+      });
     });
   });
 });

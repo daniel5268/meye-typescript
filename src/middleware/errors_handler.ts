@@ -25,8 +25,9 @@ export default function errorsHandlerMiddleware(
   if (isCode5xx(status)) {
     logger.error(error);
 
-    return res.status(INTERNAL_ERROR).send({ error: { message: 'Internal error, please contact administrator' } });
+    return res.status(INTERNAL_ERROR)
+      .send(new errors.HttpError('Internal error, please contact administrator', INTERNAL_ERROR));
   }
 
-  return res.status(status).send({ error: { message: errorMessage } });
+  return res.status(status).send(error);
 }
