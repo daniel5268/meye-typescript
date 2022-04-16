@@ -12,42 +12,34 @@ assert(DB_HOST, 'DB_HOST must be provided in the environment variables');
 assert(DB_PORT, 'DB_PORT must be provided in the environment variables');
 assert(DB_USER, 'DB_USER must be provided in the environment variables');
 assert(DB_PASSWORD, 'DB_PASSWORD must be provided in the environment variables');
-class APIConfig {
-  port: number;
 
+type APIConfig = {
+  port: number;
   logLevel: string;
-
   apiName: string;
+};
 
-  constructor(port: number, logLevel: string, apiName: string) {
-    this.port = port;
-    this.logLevel = logLevel;
-    this.apiName = apiName;
-  }
-}
+const api: APIConfig = {
+  port: +PORT,
+  logLevel: LOG_LEVEL,
+  apiName: 'meye-typescript',
+};
 
-class DBConfig {
+type DBConfig = {
   name: string;
-
   host: string;
-
   port: number;
-
   user: string;
-
   password: string;
+};
 
-  constructor(name: string, host: string, port: number, user: string, password: string) {
-    this.name = name;
-    this.host = host;
-    this.port = port;
-    this.user = user;
-    this.password = password;
-  }
-}
-
-const db = new DBConfig(DB_NAME, DB_HOST, +DB_PORT, DB_USER, DB_PASSWORD);
-const api = new APIConfig(+PORT, LOG_LEVEL, 'meye-typescript');
+const db: DBConfig = {
+  name: DB_NAME,
+  host: DB_HOST,
+  port: +DB_PORT,
+  user: DB_USER,
+  password: DB_PASSWORD,
+};
 
 const config = {
   db, api,
