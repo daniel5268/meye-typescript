@@ -3,7 +3,7 @@ import { http as httpConstants } from './constants';
 
 const {
   statusCodes: {
-    BAD_REQUEST, UNAUTHORIZED, NOT_FOUND, BAD_GATEWAY, FORBIDDEN,
+    BAD_REQUEST, UNAUTHORIZED, NOT_FOUND, BAD_GATEWAY, FORBIDDEN, CONFLICT,
   },
 } = httpConstants;
 
@@ -43,5 +43,11 @@ export class BadGatewayError extends HttpError {
 export class ForbiddenError extends HttpError {
   constructor(message: string) {
     super(message, FORBIDDEN);
+  }
+}
+
+export class ConflictError extends HttpError {
+  constructor(message: string) {
+    super(message, CONFLICT);
   }
 }

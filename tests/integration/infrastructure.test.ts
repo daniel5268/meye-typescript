@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-expressions */
 import { expect } from 'chai';
 import {
   Connection, createConnection, ConnectionOptions, getConnection as typeORMGetConnection,
@@ -27,7 +26,7 @@ describe('Infrastructure integration tests', () => {
     describe('should work correctly', async () => {
       let connection: Connection;
       let userDBHelper: DatabaseHelper<User>;
-      const users: User[] = [userData.userInstance, new User('second_username', 'password')];
+      const users: User[] = [userData.userInstance, new User('second_username', 'password', 'admin')];
 
       const options: ConnectionOptions = {
         name: 'default',
@@ -49,7 +48,7 @@ describe('Infrastructure integration tests', () => {
       });
 
       describe('insert', () => {
-        it('should insert correctly', async () => {
+        it.only('should insert correctly', async () => {
           await userDBHelper.insert([userData.userInstance]);
 
           expect(userData.userInstance.id).to.be.equal(1);
@@ -106,6 +105,7 @@ describe('Infrastructure integration tests', () => {
 
           const [foundUser] = await userDBHelper.find({ username: newUsername });
 
+          // eslint-disable-next-line @typescript-eslint/no-unused-expressions
           expect(foundUser).not.to.be.undefined;
         });
       });

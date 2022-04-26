@@ -1,12 +1,12 @@
 import log4js from 'log4js';
 
-import { api } from './config';
+import { api } from '../config';
 
 export default class Logger {
   private logger: log4js.Logger;
 
   constructor() {
-    const { logLevel, apiName } = api;
+    const { LOG_LEVEL: logLevel, API_NAME: apiName } = api;
 
     const config: log4js.Configuration = {
       appenders: {

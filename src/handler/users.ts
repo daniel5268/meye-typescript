@@ -2,11 +2,10 @@ import {
   Request, Response, NextFunction,
 } from 'express';
 
-import User from '../domain/entities/User';
 import { logger } from '../infrastructure';
 
 interface UserService {
-  create(info: Partial<User>): Promise<Partial<User>>
+  create(info: any): Promise<any>
 }
 
 export default class UserHandler {
@@ -19,7 +18,7 @@ export default class UserHandler {
   public create(req: Request, res: Response, next: NextFunction): any {
     const { body } = req;
 
-    return this.userService.create(body as Partial<User>)
+    return this.userService.create(body)
       .then(res.json)
       .catch((error) => {
         logger.error(error);
